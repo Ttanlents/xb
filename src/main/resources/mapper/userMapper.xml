@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjf.dao.UserDao">
+
+    <resultMap id="userMap" type="User">
+        <id    property="id"   column="id" />
+        <association property="focusCount" column="id" javaType="Integer" select="getFocusCountByUserId"/>
+        <collection property="focusIds" column="id"  ofType="integer" select="selectFocusIds" />
+
+    </resultMap>
+
+
+    <select id="selectByUsername" parameterType="String" resultMap="userMap">
+        SELECT
+        `user`.id,
+        `user`.username,
+        `user`.`password`,
+        `user`.email,
+        `user`.qq_openid,
+        `user`.wx_openid,
+        `user`.real_name,
+        `user`.age,
+        `user`.phone,
+        `user`.gender,
+        `user`.info,
+        `user`.register_time,
+        `user`.login_time,
+        `user`.pic,
+        `user`.look,
+        `user`.is_secret,
+        `user`.dept_id,dept.`name` dept_name
+        FROM
+        `user`,dept
+        <where>
+            <if test="username != null and username != ''">and `user`.username like concat('%',#{username},'%')</if>
+            and user.dept_id=dept.id
+        </where>
+    </select>
+
+    <select id="getFocusCountByUserId" parameterType="integer" resultType="integer">
+        select count(1) from userfocus where userfocus.user_id=#{id}
+    </select>
+    <select id="selectFocusIds" parameterType="integer" resultType="integer">
+        select userfocus.user_focus_id from userfocus where userfocus.user_id=#{id}
+    </select>
+
+    <select id="selectByUsernameAndPassword"  resultMap="userMap">
+        SELECT
+        `user`.id,
+        `user`.username,
+        `user`.`password`,
+        `user`.email,
+        `user`.qq_openid,
+        `user`.wx_openid,
+        `user`.real_name,
+        `user`.age,
+        `user`.phone,
+        `user`.gender,
+        `user`.info,
+        `user`.register_time,
+        `user`.login_time,
+        `user`.pic,
+        `user`.look,
+        `user`.is_secret,
+        `user`.dept_id,
+        dept.`name` dept_name
+        FROM
+        `user`,dept
+        WHERE
+        `user`.username = #{username}
+        AND `user`.`password` = #{password}
+        and user.dept_id=dept.id
+    </select>
+
+    <insert id="saveUserFocus">
+        insert into userfocus  VALUES(#{loginUserId},#{focusId})
+    </insert>
+
+
+    <delete id="deleteUserFocus">
+        DELETE from userfocus where user_id=#{loginUserId} and user_focus_id=#{focusId}
+    </delete>
+
+    <select id="selectFocusUsers" parameterType="integer" resultType="User">
+        SELECT
+        `user`.*,
+        dept.`name` depe_name
+        FROM
+        `user`,
+        userfocus,
+        dept
+        WHERE
+        `user`.id = userfocus.user_focus_id
+        AND userfocus.user_id = #{userId}
+        AND `user`.dept_id = dept.id
+    </select>
+
+
+</mapper>
