@@ -1,5 +1,6 @@
 package com.yjf.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yjf.entity.Article;
 import org.springframework.data.domain.Page;
 
@@ -15,5 +16,15 @@ public interface ArticleService extends BaseService<Article,String> {
     Page<Article> selectAll(Integer pageNum,Integer pageSize);
 
     Integer getFavCount(Integer id);
+
+    void changeCollection(Boolean flag,Integer uId,Integer aId);
+
+    Boolean  getCollectionStatus(Integer uId, Integer aId);
+
+    Article saveArticleForSolr(Article article);
+
+    PageInfo<Article> selectCollectArticle(Integer pageNum,Integer pageSize,Integer userId,String title);
+
+
 
 }

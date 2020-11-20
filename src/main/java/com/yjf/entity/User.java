@@ -14,7 +14,7 @@ public class User {
     @Id
     @KeySql(useGeneratedKeys = true)
     private Integer id;
-
+    //javascript:void(0);
     /**
      * 用户名
      */

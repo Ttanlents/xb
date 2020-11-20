@@ -103,7 +103,7 @@
 
 						<div class="myTitle">
 							<h3 class="text-center">{{article.title}}</h3>
-							<input type="submit" value="取消收藏" class="btn btn-danger">
+							<input  type="button" @click="changeCollect()" :value="status?'取消收藏':'收藏'" class="btn btn-danger">
 
 						</div>
 
@@ -121,13 +121,9 @@
 						<div class="myList">
 							<p>您关注的小伙伴等人也收藏了该文章</p>
 							<ul>
-								<li class="list-group-item">
-									<a href="#">小东</a>
+								<li class="list-group-item" v-for="user in userList">
+									<a href="javascript:void(0);" @click="toDetail(user)">{{user.realName}}</a>
 								</li>
-								<li class="list-group-item">
-									<a href="#">小标</a>
-								</li>
-
 							</ul>
 						</div>
 					</section>
@@ -160,7 +156,10 @@
 			let vm=new Vue({
 				el:'.page-content',
 				data:{
-                    article:{}
+                    article:{},
+					userList:{},
+					status:{},
+                    loginUser:{}
 				},
 				methods:{
 					selectFavCount:function () {
@@ -173,10 +172,58 @@
 						        Vue.set(this.article,'count',response.data.obj)
 							}
 						}).catch();
+                    },
+					selectUsers:function () {
+                        let loginUserStr = sessionStorage.getItem("loginUser");
+                         this.loginUser = JSON.parse(loginUserStr);
+                        axios({
+                            url:'article/getUsersByArticleId',
+                            params:{userId:this.loginUser.id,articleId:this.article.id}
+                        }).then(response=>{
+                            if (response.data.success){
+                               this.userList=response.data.obj;
+                            }
+                        }).catch();
+                    },
+                    toDetail: function (user) {
+                        layer.obj = user;
+                        layer.open({
+                            type: 2,
+                            title: false,
+                            area: ['80%', '80%'],
+                            content: ['user/toDetail'],
+                            end: () => { //此处用于演示
+
+
+                            }
+                        })
+                    },
+					getCollectStatus:function () {
+                        axios({
+                            url:'article/getCollectionStatus',
+                            params:{userId:this.loginUser.id,articleId:this.article.id}
+                        }).then(response=>{
+                            if (response.data.success){
+                                this.status=response.data.obj;
+                            }
+                        }).catch();
+                    },
+                    changeCollect:function () {
+                        axios({
+                            url:'article/changeCollect',
+                            params:{userId:this.loginUser.id,articleId:this.article.id,status:this.status}
+                        }).then(response=>{
+                            if (response.data.success){
+                                this.status=response.data.obj;
+                                layer.msg(response.data.msg)
+                            }
+                        }).catch();
                     }
 				},
 				created:function () {
 					this.selectFavCount();
+					this.selectUsers();
+					this.getCollectStatus();
                 }
 			});
 		</script>

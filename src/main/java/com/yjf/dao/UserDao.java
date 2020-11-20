@@ -24,4 +24,10 @@ public interface UserDao extends Mapper<User> {
 
     List<User> selectFocusUsers(Integer userId);
 
+    List<User> selectUsersByArticleId(@Param("userId") Integer userId, @Param("articleId") Integer articleId);
+
+    User selectUserById(Integer userId);
+
+    List<User> selectUsersByDeptId(Integer deptId);
+
 }

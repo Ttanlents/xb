@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * @Description :继承接口，设置实例泛型和主键泛型
  */
 @Repository
-public interface ArticleJpaDao extends SolrCrudRepository<Article,String> {
+public interface ArticleSolrDao extends SolrCrudRepository<Article,String> {
     //命名法查询分页
     Page<Article> findByKeywordsOrderByBrowseCountDesc(String keywords, Pageable pageable);
 

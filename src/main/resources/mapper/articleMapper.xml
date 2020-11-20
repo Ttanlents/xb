@@ -7,6 +7,26 @@
         select count(1) from favorite where a_id=#{id}
     </select>
 
+    <select id="selectCollectArticle" resultType="Article">
+        SELECT
+        article.id,
+        article.title,
+        article.user_id,
+        article.publish_date,
+        article.browse_count,
+        article.content,
+        `user`.real_name publish_real_name
+        FROM
+        article,
+        favorite,
+        `user`
+        <where>
+            favorite.u_id = #{userId} AND favorite.a_id = article.id AND `user`.id = article.user_id
+            <if test="title != null and title != ''">and article.title like concat('%',#{title},'%')</if>
+        </where>
+
+    </select>
+
 
 
 </mapper>

@@ -3,6 +3,8 @@ package com.yjf.service;
 import com.github.pagehelper.PageInfo;
 import com.yjf.entity.User;
 
+import java.util.List;
+
 /**
  * @author 余俊锋
  * @date 2020/11/17 20:08
@@ -18,4 +20,10 @@ public interface UserService extends BaseService<User,Integer>{
     int chancelFocus(Integer loginUserId,Integer focusId);
 
     PageInfo<User> selectFocusUsers(Integer pageNum,Integer pageSize,Integer userId);
+
+    List<User> selectUsersByArticleId(Integer userId, Integer articleId);
+
+    User selectUserById(Integer userId);
+
+    List<User> selectUsersByDeptId(Integer deptId);
 }

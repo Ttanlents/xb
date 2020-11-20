@@ -54,5 +54,20 @@ public class UserServiceImpl extends BaseServiceImpl<User,Integer> implements Us
         return pageInfo;
     }
 
+    @Override
+    public List<User> selectUsersByArticleId(Integer userId, Integer articleId) {
+        return userdao.selectUsersByArticleId(userId,articleId);
+    }
+
+    @Override
+    public User selectUserById(Integer userId) {
+        return userdao.selectUserById(userId);
+    }
+
+    @Override
+    public List<User> selectUsersByDeptId(Integer deptId) {
+        return userdao.selectUsersByDeptId(deptId);
+    }
+
 
 }

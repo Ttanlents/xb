@@ -57,12 +57,33 @@ public class UserController {
         return  result;
     }
 
+    /**
+     *@Description TODO: 我关注的用户
+     *@author 余俊锋
+     *@date 2020/11/20 9:44
+     *@params pageNum
+     * @param pageSize
+     * @param userId
+     *@return com.yjf.entity.Result
+     */
     @RequestMapping(value = "getFocusUsers/{pageNum}/{pageSize}")
     @ResponseBody
     public Result getFocusUsers(@PathVariable Integer pageNum,@PathVariable  Integer pageSize,Integer userId){
         Result result = new Result();
         PageInfo<User> pageInfo = userService.selectFocusUsers(pageNum, pageSize, userId);
         result.setObj(pageInfo);
+        return result;
+    }
+
+    @RequestMapping(value = "initLoginUser")
+    @ResponseBody
+    public Result initLoginUser(Integer userId){
+        Result result = new Result();
+        User user = new User();
+        user.setId(userId);
+        User loginUser = userService.selectUserById(userId);
+        loginUser.setPassword(null);
+        result.setObj(loginUser);
         return result;
     }
 

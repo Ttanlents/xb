@@ -95,5 +95,95 @@
         AND `user`.dept_id = dept.id
     </select>
 
+    <select id="selectUsersByArticleId" resultMap="userMap">
+        SELECT
+        `user`.id,
+        `user`.username,
+        `user`.`password`,
+        `user`.email,
+        `user`.qq_openid,
+        `user`.wx_openid,
+        `user`.real_name,
+        `user`.age,
+        `user`.phone,
+        `user`.gender,
+        `user`.info,
+        `user`.register_time,
+        `user`.login_time,
+        `user`.pic,
+        `user`.look,
+        `user`.is_secret,
+        `user`.dept_id,
+        dept.`name` dept_name
+        FROM
+        `user`,dept
+        WHERE
+        `user`.id IN (
+        SELECT
+        userfocus.user_focus_id
+        FROM
+        userfocus
+        WHERE
+        userfocus.user_id = #{userId}
+        AND userfocus.user_focus_id IN ( SELECT favorite.u_id FROM favorite WHERE favorite.a_id = #{articleId} )) and `user`.dept_id=dept.id
+    </select>
+
+
+    <select id="selectUserById" parameterType="integer" resultMap="userMap">
+        SELECT
+        `user`.id,
+        `user`.username,
+        `user`.`password`,
+        `user`.email,
+        `user`.qq_openid,
+        `user`.wx_openid,
+        `user`.real_name,
+        `user`.age,
+        `user`.phone,
+        `user`.gender,
+        `user`.info,
+        `user`.register_time,
+        `user`.login_time,
+        `user`.pic,
+        `user`.look,
+        `user`.is_secret,
+        `user`.dept_id,
+        dept.`name` dept_name
+        FROM
+        `user`,
+        dept
+        WHERE
+        `user`.id = #{userId}
+        AND dept.id = `user`.dept_id
+    </select>
+
+    <select id="selectUsersByDeptId" resultMap="userMap">
+        SELECT
+        `user`.id,
+        `user`.username,
+        `user`.`password`,
+        `user`.email,
+        `user`.qq_openid,
+        `user`.wx_openid,
+        `user`.real_name,
+        `user`.age,
+        `user`.phone,
+        `user`.gender,
+        `user`.info,
+        `user`.register_time,
+        `user`.login_time,
+        `user`.pic,
+        `user`.look,
+        `user`.is_secret,
+        `user`.dept_id,
+        dept.`name` dept_name
+        FROM
+        `user`,
+        dept
+        WHERE
+        `user`.dept_id=#{deptId}
+        AND dept.id = `user`.dept_id
+    </select>
+
 
 </mapper>

@@ -45,7 +45,7 @@
                 <li><a href="home.html"> <i class="icon-home"></i>主页 </a></li>
                 <li><a href="#userDropdown" data-toggle="collapse" aria-expanded="true"> <i class="icon-windows"></i>用户列表</a>
                     <ul id="userDropdown" class="collapse show">
-                        <li class="active"><a href="user.html">查看用户</a></li>
+                        <li class="active"><a href="html/user.html">查看用户</a></li>
                         <li><a href="html/my_user.html">我关注的用户</a></li>
                         <li><a href="html/article.html">发布文章</a></li>
                         <li><a href="html/article_collect.html">我的收藏</a></li>
@@ -55,8 +55,8 @@
 
                 <li><a href="#depDropdown" data-toggle="collapse"> <i class="icon-windows2"></i>部门列表</a>
                     <ul id="depDropdown" class="collapse list-unstyled ">
-                        <li><a href="department.html">全部部门</a></li>
-                        <li><a href="meeting.html">会议系统</a></li>
+                        <li><a href="html/department.html">全部部门</a></li>
+                        <li><a href="html/meeting.html">会议系统</a></li>
                     </ul>
                 </li>
 
@@ -220,26 +220,41 @@
                 })
             },
             doChecked: function () {
-                console.log(this.pageInfo.list.length)
-                let loginUserStr = sessionStorage.getItem("loginUser");
-                let loginUser = JSON.parse(loginUserStr);
-                console.log(loginUser);
-                this.loginUser = loginUser;
-                this.focusIds = loginUser.focusIds;
-                for (let i = 0; i < this.pageInfo.list.length; i++) {
-                    for (let j = 0; j < this.focusIds.length; j++) {
-                        if (this.pageInfo.list[i].id == this.focusIds[j]) {
-                            Vue.set(this.pageInfo.list[i], 'checked', 1);
-                        }
-                    }
-                }
+                        let loginUserStr = sessionStorage.getItem("loginUser");
+                        let loginUser = JSON.parse(loginUserStr);
+                        axios({
+                            url:'user/initLoginUser',
+                            params:{userId:loginUser.id}
+                        }).then(response=>{
+                            if (response.data.success){
+                                this.loginUser=response.data.obj;
+                                this.focusIds = this.loginUser.focusIds;
+                                console.log('初始化关注数组');
+                                console.log(this.focusIds);
+                                for (let i = 0; i < this.pageInfo.list.length; i++) {
+                                    for (let j = 0; j < this.focusIds.length; j++) {
+                                        if (this.pageInfo.list[i].id == this.focusIds[j]) {
+                                            console.log(1111);
+                                            Vue.set(this.pageInfo.list[i], 'checked', 1);
+                                        }
+                                    }
+                                }
+                            }
+                        }).catch(error=>{
+
+                        });
+
             },
             changeFocus: function (user) {
                 let checked = user.checked;
                 let focusId = user.id;
                 let loginUserId = this.loginUser.id;
                 if (checked == 1) {
-                    this.flag = false;
+                    this.flag = false;  //原本是关注，现在要取关
+                    console.log('我想取关')
+                }else {
+                    this.flag=true;
+                    console.log('我想加关注')
                 }
                 axios({
                     url: 'user/changeFocus',
@@ -247,21 +262,24 @@
                     params: {loginUserId: loginUserId, focusId: focusId, flag: this.flag}
                 }).then(response => {
                     if (response.data.success) {
-                        layer.msg(response.data.msg)
+                        layer.msg(response.data.msg);
                         if (this.flag){
                             //加关
+                            console.log('关注'+focusId);
                             for (let i = 0; i < this.pageInfo.list.length; i++) {
                                 if (this.pageInfo.list[i].id==focusId){
                                     Vue.set(this.pageInfo.list[i], 'checked', 1);
                                 }
                             }
                         }else {
+                            console.log('取关'+focusId);
                             for (let i = 0; i < this.pageInfo.list.length; i++) {
                                 if (this.pageInfo.list[i].id==focusId){
                                     Vue.set(this.pageInfo.list[i], 'checked', 0);
                                 }
                             }
                         }
+
 
                     }else {
                         layer.msg(response.data.msg)

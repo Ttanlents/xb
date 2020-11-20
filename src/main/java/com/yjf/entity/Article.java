@@ -2,6 +2,7 @@ package com.yjf.entity;
 
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.solr.core.mapping.SolrDocument;
+import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import java.util.Objects;
 public class Article {
     @Id
     @Field
+    @KeySql(useGeneratedKeys = true)
     private String id;
 
     /**
