@@ -18,6 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GlobalExceptionController {
 
 
+    /**
+     *@Description TODO:验证码异常处理
+     *@author 余俊锋
+     *@date 2020/11/21 13:28
+     *@params kaptchaException
+     *@return com.yjf.entity.Result
+     */
     @ExceptionHandler(value = KaptchaException.class)
     @ResponseBody
     public Result kaptchaExceptionHandler(KaptchaException kaptchaException) {
@@ -32,4 +39,19 @@ public class GlobalExceptionController {
         }
 
     }
+
+    /**
+     *@Description TODO:全局运行时异常处理
+     *@author 余俊锋
+     *@date 2020/11/21 13:28
+     *@params e
+     *@return com.yjf.entity.Result
+     */
+    @ExceptionHandler(value = RuntimeException.class)
+    @ResponseBody
+    public Result allExceptionHandler(Exception e) {
+            return new Result(false,e.getMessage(),null);
+        }
+
+
 }

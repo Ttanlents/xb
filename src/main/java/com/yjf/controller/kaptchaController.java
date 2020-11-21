@@ -19,18 +19,38 @@ public class kaptchaController {
     @Autowired
     private Kaptcha kaptcha;
 
+    /**
+     *@Description TODO:内部维护 返回一张验证码图片
+     *@author 余俊锋
+     *@date 2020/11/21 13:29
+     *@params
+     *@return void
+     */
     @GetMapping("/render")
     public void render() {
         kaptcha.render();
     }
 
+    /**
+     *@Description TODO:校验验证码 validate
+     *@author 余俊锋
+     *@date 2020/11/21 13:30
+     *@params code
+     *@return void
+     */
     @PostMapping("/valid")
     public void validDefaultTime(@RequestParam String code) {
         //default timeout 900 seconds  KAPTCHA_SESSION_KEY
         boolean validate = kaptcha.validate(code);
         System.out.println(validate);
     }
-
+/**
+ *@Description TODO:校验验证码  过期时间
+ *@author 余俊锋
+ *@date 2020/11/21 13:31
+ *@params code
+ *@return void
+ */
     @PostMapping("/validTime")
     public void validCustomTime(@RequestParam String code) {
         kaptcha.validate(code, 60);

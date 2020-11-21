@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 /**
  * @author 余俊锋
@@ -33,6 +32,16 @@ public class MeetingController {
     @Autowired
     private UserService userService;
 
+    /**
+     *@Description TODO:分页查询会议
+     *@author 余俊锋
+     *@date 2020/11/21 11:28
+     *@params pageNum
+     * @param pageSize
+     * @param title
+     * @param status
+     *@return com.yjf.entity.Result
+     */
     @RequestMapping("selectPage/{pageNum}/{pageSize}")
     @ResponseBody
     public Result selectPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize, String title, String status) {
@@ -41,7 +50,13 @@ public class MeetingController {
         result.setObj(pageInfo);
         return result;
     }
-
+/**
+ *@Description TODO:查询所有的部门
+ *@author 余俊锋
+ *@date 2020/11/21 11:28
+ *@params
+ *@return com.yjf.entity.Result
+ */
     @RequestMapping("selectAllDept")
     @ResponseBody
     public Result selectAllDept() {
@@ -50,7 +65,13 @@ public class MeetingController {
         result.setObj(deptList);
         return result;
     }
-
+/**
+ *@Description TODO:查询该id 部门  拥有的人
+ *@author 余俊锋
+ *@date 2020/11/21 11:29
+ *@params deptId
+ *@return com.yjf.entity.Result
+ */
     @RequestMapping("getDeptUsers")
     @ResponseBody
     public Result getDeptUsers(Integer deptId) {
@@ -60,6 +81,13 @@ public class MeetingController {
         return result;
     }
 
+    /**
+     *@Description TODO:发布会议
+     *@author 余俊锋
+     *@date 2020/11/21 11:29
+     *@params map
+     *@return com.yjf.entity.Result
+     */
     @RequestMapping(value = "doSave", method = RequestMethod.POST)
     @ResponseBody
     public Result doSave(@RequestBody Map<String,Object> map) {
@@ -80,4 +108,92 @@ public class MeetingController {
         result.setMsg("发布失败");
         return result;
     }
+    /**
+     *@Description TODO:获取会议详情
+     *@author 余俊锋
+     *@date 2020/11/21 11:30
+     *@params id
+     * @param session
+     *@return com.yjf.entity.Result
+     */
+    @RequestMapping(value = "getDetail")
+    @ResponseBody
+    public Result getDetail(Integer id, HttpSession session) {
+        Result result = new Result();
+        Map<String,Object> map=new HashMap<>();
+        ArrayList<Integer> needJoin = new ArrayList<>();  //需要参加会议的人
+        Meeting meeting = meetingService.selectById(id);
+        String makeUser = meeting.getMakeUser();
+       if (makeUser!=null&&!makeUser.equals("")){
+           for (String s : makeUser.split(",")) {
+               needJoin.add(Integer.parseInt(s));
+           }
+       }
+        List<Integer> actuallyJoin = meetingService.selectActuallyJoin(id);
+        Boolean flag=true;
+        //1.判断是否需要参加
+        //2.如果需要参加，判断是否已经参加
+        User loginUser =(User) session.getAttribute("loginUser");
+        if (needJoin.contains(loginUser.getId())){
+            //需要参加
+           if (!actuallyJoin.contains(loginUser.getId())){
+               //还没参加
+                map.put("flag",1);
+           }else {
+               //已经参加
+               map.put("flag",2);
+           }
+        }else {
+            //不需要参加
+            map.put("flag",3);
+        }
+        //应到
+        int should = needJoin.size();
+        //实到
+        int actually = actuallyJoin.size();
+        //未到
+        int notJoin = should - actually;
+        map.put("should", should);
+        map.put("actually", actually);
+        map.put("notJoin", notJoin);
+        map.put("meet",meeting);
+        result.setObj(map);
+        return result;
+    }
+
+    /**
+     *@Description TODO:参加  或  取消会议
+     *@author 余俊锋
+     *@date 2020/11/21 13:33
+     *@params id
+     * @param flag
+     * @param session
+     *@return com.yjf.entity.Result
+     */
+    @RequestMapping(value = "changeJoinMeet", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result changeJoinMeet(Integer id,Boolean flag,HttpSession session) {
+        Result result = new Result();
+        User loginUser =(User) session.getAttribute("loginUser");
+        Meeting meeting = meetingService.selectById(id);
+        int status = meeting.getStatus();
+        if (status==0){
+            int i = meetingService.changeMeetingJoin(loginUser.getId(), id, flag);
+            if (i>0&&flag){
+                result.setMsg("参加会议成功");
+            }else {
+                result.setMsg("取消参加成功");
+            }
+        }else {
+            result.setSuccess(false);
+            if (status==1){
+                result.setMsg("操作失败，会议已经开始了");
+            }else if (status==2){
+                result.setMsg("操作失败，会议已经结束");
+            }
+        }
+        return result;
+    }
+
+
 }

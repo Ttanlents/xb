@@ -140,7 +140,7 @@
 											<strong>状态：</strong>已结束
 										</span>
 									</div>
-									<a href="meeting_detail.html">{{meet.title}}</a>
+									<a href="javascript:void(0);" @click="toDetail(meet)">{{meet.title}}</a>
 									<p class="h6"><strong>部门：</strong>{{meet.deptName}}</p>
 									<p class="h6"><strong>开始时间：</strong>{{meet.startTime}}</p>
 									<p style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis">
@@ -227,13 +227,13 @@
 
                         });
                     },
-                    toDeatil: function (user) {
-                        layer.obj = user;
+                    toDetail: function (meet) {
+                        layer.obj = meet;
                         layer.open({
                             type: 2,
                             title: false,
                             area: ['80%', '80%'],
-                            content: ['user/toDetail'],
+                            content: ['html/meeting_detail.html'],
                             end: () => { //此处用于演示
                                 if (layer.success != undefined && layer.success) {
                                     layer.msg("更新完成!");

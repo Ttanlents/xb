@@ -20,8 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("user")
 public class UserController {
     @Autowired
-    UserService userService;
-
+    private UserService userService;
+    /**
+     *@Description TODO:用户列表 分页查询
+     *@author 余俊锋
+     *@date 2020/11/21 13:35
+     *@params pageNum
+     * @param pageSize
+     * @param username
+     *@return com.yjf.entity.Result
+     */
     @RequestMapping("selectPage/{pageNum}/{pageSize}")
     @ResponseBody
     public Result selectPage(@PathVariable  Integer pageNum,@PathVariable Integer pageSize, String username) {
@@ -35,7 +43,15 @@ public class UserController {
     public String toDetail() {
         return "/html/user_detail.html";
     }
-
+    /**
+     *@Description TODO:关注  或  取消关注
+     *@author 余俊锋
+     *@date 2020/11/21 13:34
+     *@params loginUserId
+     * @param focusId
+     * @param flag
+     *@return com.yjf.entity.Result
+     */
     @RequestMapping(value = "changeFocus",method = RequestMethod.PUT)
     @ResponseBody
     public Result changeFocus(Integer loginUserId,Integer focusId,Boolean flag){
@@ -74,7 +90,13 @@ public class UserController {
         result.setObj(pageInfo);
         return result;
     }
-
+    /**
+     *@Description TODO:获取当前登录用户的信息
+     *@author 余俊锋
+     *@date 2020/11/21 13:34
+     *@params userId
+     *@return com.yjf.entity.Result
+     */
     @RequestMapping(value = "initLoginUser")
     @ResponseBody
     public Result initLoginUser(Integer userId){

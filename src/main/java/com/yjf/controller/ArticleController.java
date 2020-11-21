@@ -26,9 +26,9 @@ import java.util.Map;
 @RequestMapping("article")
 public class ArticleController {
     @Autowired
-    ArticleService articleService;
+    private  ArticleService articleService;
     @Autowired
-    UserService userService;
+    private UserService userService;
     /**
      *@Description TODO:文章列表  索引库分页查询
      *@author 余俊锋

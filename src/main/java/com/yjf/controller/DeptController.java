@@ -19,8 +19,15 @@ import java.util.List;
 @RequestMapping("dept")
 public class DeptController {
     @Autowired
-    DeptService deptService;
+    private  DeptService deptService;
 
+    /**
+     *@Description TODO:查询全部 部门的信息，包括其拥有成员
+     *@author 余俊锋
+     *@date 2020/11/21 13:26
+     *@params
+     *@return com.yjf.entity.Result
+     */
     @RequestMapping("getAllDept")
     @ResponseBody
     public Result getAllDept(){
