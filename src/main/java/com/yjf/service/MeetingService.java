@@ -20,6 +20,8 @@ public interface MeetingService extends BaseService<Meeting,Integer>{
 
    int  changeMeetingJoin(Integer uId,Integer mId,Boolean flag);
 
+   void changeMeetingStatus();
+
 
 
 }

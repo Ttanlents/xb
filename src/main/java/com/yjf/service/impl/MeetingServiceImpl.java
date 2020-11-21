@@ -48,6 +48,30 @@ public class MeetingServiceImpl extends BaseServiceImpl<Meeting, Integer> implem
         return meetingDao.deleteMeetingJoin(uId, mId);
     }
 
+    @Override
+    public void changeMeetingStatus() {
+        List<Meeting> meetings = meetingDao.selectAll();
+        for (Meeting meeting : meetings) {
+            long startTime = meeting.getStartTime().getTime();
+            long endTime = meeting.getEndTime().getTime();
+            long nowTime = System.currentTimeMillis();
+            Integer status = meeting.getStatus();
+            if (nowTime>startTime&&nowTime<endTime&&status!=1){
+                meeting.setStatus(1);
+                meetingDao.updateByPrimaryKeySelective(meeting);
+                System.out.println("update:会议id:"+meeting.getId()+" status:"+1);
+            }else if (nowTime>endTime&&status!=2){
+                meeting.setStatus(2);
+                meetingDao.updateByPrimaryKeySelective(meeting);
+                System.out.println("update:会议id:"+meeting.getId()+" status:"+2);
+            }else if(nowTime<startTime&&status!=0){
+                meeting.setStatus(0);
+                meetingDao.updateByPrimaryKeySelective(meeting);
+                System.out.println("update:会议id:"+meeting.getId()+" status:"+0);
+            }
+        }
+    }
+
 
     @Override
     public List<Meeting> selectAll() {

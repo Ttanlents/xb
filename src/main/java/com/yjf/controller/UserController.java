@@ -4,12 +4,16 @@ import com.github.pagehelper.PageInfo;
 import com.yjf.entity.Result;
 import com.yjf.entity.User;
 import com.yjf.service.UserService;
+import com.yjf.utils.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
+import java.util.Random;
 
 /**
  * @author 余俊锋
@@ -106,6 +110,40 @@ public class UserController {
         User loginUser = userService.selectUserById(userId);
         loginUser.setPassword(null);
         result.setObj(loginUser);
+        return result;
+    }
+
+    @RequestMapping(value = "getCode")
+    @ResponseBody
+    public Result getCode(String emailName, HttpSession session){
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i<4;i++){
+            sb.append(new Random().nextInt(10));
+        }
+        String code = sb.toString();
+        session.setAttribute("changePassword",code);
+        EmailUtil.sendEmail(emailName,code);
+        return new Result(true,"发送验证码成功",null);
+    }
+
+    @RequestMapping(value = "changePassword",method = RequestMethod.PUT)
+    @ResponseBody
+    public Result changePassword(String emailName, String code,String password,HttpSession session){
+        Result result = new Result();
+        User user = new User();
+        user.setEmail(emailName);
+        User one = userService.selectOne(user);
+        String sessionCode =(String) session.getAttribute("changePassword");
+        if (one!=null&&sessionCode.equals(code)){
+            one.setPassword(password);
+            int i = userService.updateByPrimaryKeySelective(one);
+            if (i>0){
+                result.setMsg("修改密码成功");
+                return result;
+            }
+        }
+        result.setSuccess(false);
+        result.setMsg("修改失败");
         return result;
     }
 
