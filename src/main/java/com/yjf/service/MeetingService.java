@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.yjf.entity.Meeting;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 余俊锋
@@ -21,6 +22,10 @@ public interface MeetingService extends BaseService<Meeting,Integer>{
    int  changeMeetingJoin(Integer uId,Integer mId,Boolean flag);
 
    void changeMeetingStatus();
+
+   int RecentMeetCount();
+
+   List<Map<String,String>> selectCurrentDayCount();
 
 
 

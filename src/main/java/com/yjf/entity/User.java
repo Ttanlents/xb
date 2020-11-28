@@ -109,10 +109,22 @@ public class User {
     private Integer deptId;
 
     @Transient
-    private Integer focusCount;
+    private Integer focusCount; //我关注的人数量
+
 
     @Transient
-    private List<Integer> focusIds;
+    private Integer beenFocusCount; //我关注的人数量
+
+    public Integer getBeenFocusCount() {
+        return beenFocusCount;
+    }
+
+    public void setBeenFocusCount(Integer beenFocusCount) {
+        this.beenFocusCount = beenFocusCount;
+    }
+
+    @Transient
+    private List<Integer> focusIds; //我关注的人
 
     public List<Integer> getFocusIds() {
         return focusIds;
@@ -472,8 +484,8 @@ public class User {
                 ", deptName='" + deptName + '\'' +
                 ", deptId=" + deptId +
                 ", focusCount=" + focusCount +
+                ", beenFocusCount=" + beenFocusCount +
                 ", focusIds=" + focusIds +
                 '}';
     }
-
 }

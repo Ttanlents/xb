@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 余俊锋
@@ -67,6 +68,22 @@ public class UserServiceImpl extends BaseServiceImpl<User,Integer> implements Us
     @Override
     public List<User> selectUsersByDeptId(Integer deptId) {
         return userdao.selectUsersByDeptId(deptId);
+    }
+
+    @Override
+    public int RecentUserCount() {
+        return  userdao.selectRecentUserCount();
+
+    }
+
+    @Override
+    public List<Map<String, String>> selectCurrentDayCount() {
+      return  userdao.selectCurrentDayCount();
+    }
+
+    @Override
+    public void updateUserLook(Integer id) {
+        userdao.updateUserLook(id,1);
     }
 
 

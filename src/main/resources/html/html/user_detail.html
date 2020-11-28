@@ -40,7 +40,7 @@
 						<div class="col-lg-12">
 							<div class="block">
 								<div class="title"><strong>TA的头像</strong></div>
-								<div class="avatar"><img src="img/avatar-6.jpg" alt="加载中..." style="width: 150px;height: 150px" class="img-thumbnail rounded-circle"></div>
+								<div class="avatar"><img :src="user.pic" alt="加载中..." style="width: 150px;height: 150px" class="img-thumbnail rounded-circle"></div>
 								<!--<div style="margin-top: 15px" class="text-left">-->
 								<!--&lt;!&ndash; 用于展示上传文件名的表单 &ndash;&gt;-->
 								<!--<input id="showname" onclick="makeThisfile()" type="button" class="btn btn-primary" value="更换头像">-->
@@ -49,7 +49,7 @@
 								<!--</div>-->
 								<div class="title">
 									<br>
-									<p class="h5"><strong>粉丝数：</strong><span>&nbsp;</span><span>&nbsp;</span><span>{{user.focusCount}}</span></p>
+									<p class="h5"><strong>粉丝数：</strong><span>&nbsp;</span><span>&nbsp;</span><span>{{user.beenFocusCount}}</span></p>
 									<br>
 									<p class="h5"><strong>被看数：</strong><span>&nbsp;</span><span>&nbsp;</span><span>{{user.look}}</span>
 									</p>
@@ -81,7 +81,7 @@
 										<div class="form-group row">
 											<label class="col-sm-3 form-control-label">电话</label>
 											<div class="col-sm-9">
-												<input disabled="disabled" type="text" v-model="user.phone" name="password" class="form-control">
+												<input disabled="disabled" type="text" v-model="user.phone"  class="form-control">
 											</div>
 										</div>
 										<div class="line"></div>
@@ -172,13 +172,52 @@
 			let vm=new Vue({
 				el:'.page-content',
 				data:{
-				    user:{}
+				    id:{},
+					user:{}
 				},
 				methods:{
+				    selectUserDetail:function () {
+						axios({
+							url:'user/initLoginUser',
+							params:{userId:parent.layer.obj.id}
+						}).then(response=>{
+						    if (response.data.success){
+						        this.user=response.data.obj;
+							}
+						}).catch(error=>{
+						    layer.msg(error.message)
+						});
+                    },
+                    selectUserDetail:function () {
+                        axios({
+                            url:'user/initLoginUser',
+                            params:{userId:parent.layer.obj.id}
+                        }).then(response=>{
+                            if (response.data.success){
+                                this.user=response.data.obj;
+                            }
+                        }).catch(error=>{
+                            layer.msg(error.message)
+                        });
+                    },
+                    updateUserLook:function () {
+						axios({
+							url:'user/updateUserLook',
+							method:'put',
+							params:{id:parent.layer.obj.id}
+						}).then(response=>{
+						    if (response.data.success){
+                                this.selectUserDetail();
+							}
+						}).catch(error=>{
+						    layer.msg(error.message)
+						});
+                    }
 
 				},
 				created:function () {
-					this.user=parent.layer.obj;
+                    this.updateUserLook();
+
                 }
 			});
 		</script>

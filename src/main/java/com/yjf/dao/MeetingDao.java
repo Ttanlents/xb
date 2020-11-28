@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 余俊锋
@@ -67,4 +68,10 @@ public interface MeetingDao extends Mapper<Meeting> {
 
     @Delete("delete from meeting_join where u_id=#{uId} and m_id=#{mId}")
     int deleteMeetingJoin(@Param("uId")Integer uId,@Param("mId")Integer mId);
+
+    @Select("SELECT count(1) FROM `meeting` where publish_date BETWEEN DATE_SUB(NOW(),interval 8 day) and now()")
+    int selectRecentMeetCount();
+
+    @Select("SELECT count(1) count,date_format(publish_date, '%Y-%m-%d') register_time FROM `meeting`  where DATEDIFF(now(),publish_date)<9  group by date_format(publish_date, '%m-%d')")
+    List<Map<String,String>> selectCurrentDayCount();
 }

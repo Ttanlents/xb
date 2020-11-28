@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 余俊锋
@@ -70,6 +71,16 @@ public class MeetingServiceImpl extends BaseServiceImpl<Meeting, Integer> implem
                 System.out.println("update:会议id:"+meeting.getId()+" status:"+0);
             }
         }
+    }
+
+    @Override
+    public int RecentMeetCount() {
+        return meetingDao.selectRecentMeetCount();
+    }
+
+    @Override
+    public List<Map<String, String>> selectCurrentDayCount() {
+        return meetingDao.selectCurrentDayCount();
     }
 
 

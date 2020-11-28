@@ -1,21 +1,54 @@
 package com.yjf;
 
-import com.yjf.dao.MeetingDao;
-import com.yjf.entity.Meeting;
+import com.yjf.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-@SpringBootTest
+//@SpringBootTest
 public  class XbApplicationTests {
-  @Autowired
-  MeetingDao meetingDao;
+    @Autowired
+    UserService userService;
     @Test
     public   void test01(){
-      List<Meeting> meetings = meetingDao.selectPage("关于","2");
-      System.out.println(meetings);
+        List<Map<String, String>> list = userService.selectCurrentDayCount();
+        List<Map<String, String>> mapList = initList();
+        for (Map<String, String> map : mapList) {
+            for (Map<String, String> stringMap : list) {
+                    if (map.get("registerTime").equals(stringMap.get("registerTime"))){
+                        map.put("count",stringMap.get("count"));
+                    }
+            }
+        }
+        System.out.println(mapList);
+
+
+
     }
+
+
+    public  List<Map<String, String>> initList(){
+        ArrayList<Map<String, String>> list = new ArrayList<>();
+        DateFormat dateFormat= new SimpleDateFormat("YYYY-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        for (int i = 0; i < 9; i++) {
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,-i);
+            String registerTime = dateFormat.format(calendar.getTime());
+            HashMap<String, String> map = new HashMap<>();
+            map.put("registerTime",registerTime);
+            map.put("count","0");
+            list.add(map);
+        }
+        return list;
+
+    }
+
+
+
+
 
 }

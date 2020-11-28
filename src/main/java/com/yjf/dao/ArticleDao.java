@@ -1,13 +1,11 @@
 package com.yjf.dao;
 
 import com.yjf.entity.Article;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 余俊锋
@@ -29,4 +27,14 @@ public interface ArticleDao extends Mapper<Article> {
 
 
     List<Article> selectCollectArticle(@Param("userId") Integer userId,@Param("title") String title);
+
+
+    @Select("SELECT count(1) FROM `article` where publish_date BETWEEN DATE_SUB(NOW(),interval 8 day) and now()")
+    int selectRecentArticleCount();
+
+    @Select("SELECT count(1) count,date_format(publish_date, '%Y-%m-%d') register_time FROM `article`  where DATEDIFF(now(),publish_date)<9  group by date_format(publish_date, '%m-%d')")
+    List<Map<String,String>> selectCurrentDayCount();
+
+    @Update("update article set article.browse_count=article.browse_count+#{count} where article.id=#{id}")
+    void updateArticleBrowseCount(@Param("id") Integer id,@Param("count") Integer count);
 }

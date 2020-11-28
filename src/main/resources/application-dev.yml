@@ -33,7 +33,7 @@ spring:
         login-username: druid
         login-password: 123
         url-pattern: /druid/*
-        allow: 192.168.1.127
+        allow:
       filter:
         stat:
           enabled: true   #sql监控
@@ -110,3 +110,7 @@ kaptcha:
   font:
     size: 28
     name: 微软雅黑
+
+uploads:
+  file:
+    prefix: D:\nginx-1.16.1\nginx-1.16.1\html\uploads\

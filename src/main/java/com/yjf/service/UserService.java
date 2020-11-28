@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.yjf.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 余俊锋
@@ -26,4 +27,10 @@ public interface UserService extends BaseService<User,Integer>{
     User selectUserById(Integer userId);
 
     List<User> selectUsersByDeptId(Integer deptId);
+
+    int RecentUserCount();
+
+    List<Map<String,String>> selectCurrentDayCount();
+
+    void updateUserLook(Integer id);
 }

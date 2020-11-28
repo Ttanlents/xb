@@ -166,4 +166,20 @@ public class ArticleController {
         result.setObj(pageInfo);
         return result;
     }
+
+    /**
+     *@Description TODO:浏览次数+1
+     *@author 余俊锋
+     *@date 2020/11/28 17:31
+     *@params id
+     *@return com.yjf.entity.Result
+     */
+    @RequestMapping(value = "updateArticleBrowseCount/{id}",method = RequestMethod.PUT)
+    @ResponseBody
+    public Result updateArticleBrowseCount(@PathVariable Integer id){
+        articleService.updateArticleBrowseCount(id,1);
+        return new Result(true,"修改成功",null);
+    }
+
+
 }

@@ -1,213 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<base href="/xb/"/>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- Bootstrap CSS-->
-		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-		<!-- Font Awesome CSS-->
-		<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-		<!-- Custom Font Icons CSS-->
-		<link rel="stylesheet" href="css/font.css">
-		<!-- theme stylesheet-->
-		<link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-		<!-- Custom stylesheet - for your changes-->
-		<link rel="stylesheet" href="css/custom.css">
-		<link rel="stylesheet" href="css/layer.css">
-		<title>主页</title>
-	</head>
-	<body>
-		<div id="app">
-			<header class="header">
-				<nav class="navbar navbar-expand-lg">
-				</nav>
-				<!--头-->
-			</header>
+<head>
+    <base href="/xb/"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Custom Font Icons CSS-->
+    <link rel="stylesheet" href="css/font.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/layer.css">
+    <title>主页</title>
+</head>
+<body>
+<div id="app">
+    <header class="header">
+        <nav class="navbar navbar-expand-lg">
+        </nav>
+        <!--头-->
+    </header>
 
-			<div class="d-flex align-items-stretch">
-				<!-- Sidebar Navigation-->
-				<nav id="sidebar">
-					<!--菜单栏目-->
-				</nav>
-				<!-- Sidebar Navigation end-->
-				<div class="page-content">
-					<div class="page-header">
-						<div class="container-fluid">
-							<h2 class="h5 no-margin-bottom">主面板</h2>
-						</div>
-					</div>
-					<section class="no-padding-top no-padding-bottom">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-3 col-sm-6">
-									<div class="statistic-block block">
-										<div class="progress-details d-flex align-items-end justify-content-between">
-											<div class="title">
-												<strong>新增用户</strong>
-											</div>
-											<div class="number dashtext-1">27</div>
-										</div>
-										<div class="progress progress-template">
-											<!--这个百分比由前端计算,取接近100%的数,例如 140就是接近200于是为40%-->
-											<div role="progressbar" style="width: 27%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
-										</div>
-									</div>
-								</div>
+    <div class="d-flex align-items-stretch">
+        <!-- Sidebar Navigation-->
+        <nav id="sidebar">
+            <!--菜单栏目-->
+        </nav>
+        <!-- Sidebar Navigation end-->
+        <div class="page-content">
+            <div class="page-header">
+                <div class="container-fluid">
+                    <h2 class="h5 no-margin-bottom">主面板</h2>
+                </div>
+            </div>
+            <section class="no-padding-top no-padding-bottom">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="statistic-block block">
+                                <div class="progress-details d-flex align-items-end justify-content-between">
+                                    <div class="title">
+                                        <strong>新增用户</strong>
+                                    </div>
+                                    <div class="number dashtext-1">{{map.userCount}}</div>
+                                </div>
+                                <div class="progress progress-template">
+                                    <!--这个百分比由前端计算,取接近100%的数,例如 140就是接近200于是为40%-->
+                                    <div role="progressbar" style="width: 27%" aria-valuenow="30" aria-valuemin="0"
+                                         aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
+                                </div>
+                            </div>
+                        </div>
 
-								<div class="col-md-3 col-sm-6">
-									<div class="statistic-block block">
-										<div class="progress-details d-flex align-items-end justify-content-between">
-											<div class="title">
-												<strong>新增文章</strong>
-											</div>
-											<div class="number dashtext-3">140</div>
-										</div>
-										<div class="progress progress-template">
-											<!--这个百分比由前端计算,取接近100%的数,例如 140就是接近200于是为40%-->
-											<div role="progressbar" style="width: 40%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-3 col-sm-6">
-									<div class="statistic-block block">
-										<div class="progrebarChartExample1ss-details d-flex align-items-end justify-content-between">
-											<div class="title">
-												<strong>新开会议</strong>
-											</div>
-											<div class="number dashtext-6">8</div>
-										</div>
-										<div class="progress progress-template">
-											<!--这个百分比由前端计算,取接近100%的数,例如 140就是接近200于是为40%-->
-											<div role="progressbar" style="width: 40%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-5"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="statistic-block block">
+                                <div class="progress-details d-flex align-items-end justify-content-between">
+                                    <div class="title">
+                                        <strong>新增文章</strong>
+                                    </div>
+                                    <div class="number dashtext-3">{{map.articleCount}}</div>
+                                </div>
+                                <div class="progress progress-template">
+                                    <!--这个百分比由前端计算,取接近100%的数,例如 140就是接近200于是为40%-->
+                                    <div role="progressbar" style="width: 40%" aria-valuenow="55" aria-valuemin="0"
+                                         aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="statistic-block block">
+                                <div class="progrebarChartExample1ss-details d-flex align-items-end justify-content-between">
+                                    <div class="title">
+                                        <strong>新开会议</strong>
+                                    </div>
+                                    <div class="number dashtext-6">{{map.meetCount}}</div>
+                                </div>
+                                <div class="progress progress-template">
+                                    <!--这个百分比由前端计算,取接近100%的数,例如 140就是接近200于是为40%-->
+                                    <div role="progressbar" style="width: 40%" aria-valuenow="55" aria-valuemin="0"
+                                         aria-valuemax="100" class="progress-bar progress-bar-template dashbg-5"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-					<section class="no-padding-bottom">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-lg-12">
-									<div class="line-cahrt block" style="background-color: rgb(238, 238, 238);">
-										<div id="main" style="width: 100%; height: 400px;"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
+            <section class="no-padding-bottom">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="line-cahrt block" style="background-color: rgb(238, 238, 238);">
+                                <div id="main" style="width: 100%; height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-					<footer class="footer">
-						<div class="footer__block block no-margin-bottom">
-							<div class="container-fluid text-center">
-								<p class="no-margin-bottom">Copyright &copy; 2019.Company <a href="#">东方标准</a></p>
-							</div>
-						</div>
-					</footer>
-				</div>
-			</div>
-		</div>
-		<!-- JavaScript files-->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/popper.js/umd/popper.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-		<script src="vendor/jquery.cookie/jquery.cookie.js"></script>
-		<script src="vendor/chart.js/Chart.min.js"></script>
-		<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-		<script src="js/charts-home.js"></script>
-		<script src="js/front.js"></script>
-		<script src="js/custom.js"></script>
-		<script src="js/layer.js"></script>
-		<script src="js/vue-2.6.11.js"></script>
-		<script src="js/axios-0.19.2.min.js"></script>
-		<script src="js/jquery-cookie-1.4.1.js"></script>
-		<script src="js/echarts.min.js"></script>
-		<script>
-            // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('main'));
-
-            // 指定图表的配置项和数据
-            option = {
-                // 标题
-                title: {
-                    text: '小标数据汇总'
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            backgroundColor: '#aaaaff'
-                        }
+            <footer class="footer">
+                <div class="footer__block block no-margin-bottom">
+                    <div class="container-fluid text-center">
+                        <p class="no-margin-bottom">Copyright &copy; 2019.Company <a href="#">东方标准</a></p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/popper.js/umd/popper.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+<script src="js/charts-home.js"></script>
+<script src="js/front.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/layer.js"></script>
+<script src="js/vue-2.6.11.js"></script>
+<script src="js/axios-0.19.2.min.js"></script>
+<script src="js/jquery-cookie-1.4.1.js"></script>
+<script src="js/echarts.min.js"></script>
+<script>
+    let vm = new Vue({
+        el: '.page-content',
+        data: {
+            map: {},
+            infoArrMap:{}
+        },
+        methods: {
+            getRecentCount: function () {
+                axios({
+                    url: 'home/getRecentCount'
+                }).then(response => {
+                    if (response.data.success) {
+                        this.map = response.data.obj;
+                        this.getPicData();
                     }
-                },
-                // 图表说明
-                legend: {
-                    data: ['新增用户', '新增文章', '新开会议']
-                },
-                // 工具栏(图片另存为按钮)
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
+                }).catch(error => {
+                    layer.msg(error.message)
+                });
+            },
+            getPicData:function(){
+                axios({
+                    url: 'home/getCurrentDayCount'
+                }).then(response => {
+                    if (response.data.success) {
+                        this.infoArrMap = response.data.obj;
+                        console.log(this.infoArrMap)
+                        this.initPic();
                     }
-                },
-                // 布局
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ["10.21", "10.22", "10.23", "10.24", "10.25", "10.26", "10.27", "10.28", "10.29"]
-                }],
-                yAxis: [{
-                    type: 'value'
-                }],
-                series: [{
-                    name: '新增用户',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: {},
-                    data: [3, 5, 7, 4, 6, 2, 6, 3, 4]
-                },
-                    {
-                        name: '新增文章',
-                        type: 'line',
-                        stack: '总量',
-                        areaStyle: {},
-                        data: [15, 10, 12, 14, 12, 9, 10, 11, 8]
+                }).catch(error => {
+                    layer.msg(error.message)
+                });
+            },
+            initPic: function () {
+                console.log(this.infoArrMap.userArr)
+                console.log(typeof this.infoArrMap.userArr)
+                // 基于准备好的dom，初始化echarts实例
+                let myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+                option = {
+                    // 标题
+                    title: {
+                        text: '小标数据汇总'
                     },
-                    {
-                        name: '新开会议',
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#aaaaff'
+                            }
+                        }
+                    },
+                    // 图表说明
+                    legend: {
+                        data: ['新增用户', '新增文章', '新开会议']
+                    },
+                    // 工具栏(图片另存为按钮)
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    // 布局
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        boundaryGap: false,
+                        data: this.infoArrMap.dateArr
+                    }],
+                    yAxis: [{
+                        type: 'value'
+                    }],
+                    series: [{
+                        name: '新增用户',
                         type: 'line',
                         stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
                         areaStyle: {},
-                        data: [8, 8, 9, 7, 9, 12, 13, 10, 11]
-                    }
-                ]
-            };
+                        data: this.infoArrMap.userArr
+                    },
+                        {
+                            name: '新增文章',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: this.infoArrMap.articleArr
+                        },
+                        {
+                            name: '新开会议',
+                            type: 'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {},
+                            data: this.infoArrMap.meetArr
+                        }
+                    ]
+                };
 
 
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
-		</script>
-		<script>
-			$(function () {
-                $('.navbar').load("getNavBar");
-                $('#sidebar').load("getSideBar");
-            });
-		</script>
-	</body>
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }
+        },
+
+        created: function () {
+            this.getRecentCount()
+        }
+    });
+</script>
+<script>
+    $(function () {
+        $('.navbar').load("getNavBar");
+        $('#sidebar').load("getSideBar");
+    });
+</script>
+</body>
 </html>

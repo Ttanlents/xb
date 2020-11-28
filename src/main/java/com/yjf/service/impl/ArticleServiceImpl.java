@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 余俊锋
@@ -77,6 +78,21 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article,String> implemen
         List<Article> articles = articleDao.selectCollectArticle(userId,title);
         PageInfo<Article> pageInfo = new PageInfo<>(articles);
         return pageInfo;
+    }
+
+    @Override
+    public int RecentArticleCount() {
+        return articleDao.selectRecentArticleCount();
+    }
+
+    @Override
+    public List<Map<String, String>> selectCurrentDayCount() {
+        return articleDao.selectCurrentDayCount();
+    }
+
+    @Override
+    public void updateArticleBrowseCount(Integer id,Integer count) {
+        articleDao.updateArticleBrowseCount(id,count);
     }
 
 

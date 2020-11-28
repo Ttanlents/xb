@@ -5,6 +5,7 @@
     <resultMap id="userMap" type="User">
         <id    property="id"   column="id" />
         <association property="focusCount" column="id" javaType="Integer" select="getFocusCountByUserId"/>
+        <association property="beenFocusCount" column="id" javaType="Integer" select="getBeenFocusCountByUserId"/>
         <collection property="focusIds" column="id"  ofType="integer" select="selectFocusIds" />
 
     </resultMap>
@@ -34,11 +35,14 @@
         <where>
             <if test="username != null and username != ''">and `user`.username like concat('%',#{username},'%')</if>
             and user.dept_id=dept.id
-        </where>
+        </where>  <!-- select count(1) from userfocus where user_focus_id=2-->
     </select>
 
     <select id="getFocusCountByUserId" parameterType="integer" resultType="integer">
         select count(1) from userfocus where userfocus.user_id=#{id}
+    </select>
+    <select id="getBeenFocusCountByUserId" parameterType="integer" resultType="integer">
+        select count(1) from userfocus where user_focus_id=#{id}
     </select>
     <select id="selectFocusIds" parameterType="integer" resultType="integer">
         select userfocus.user_focus_id from userfocus where userfocus.user_id=#{id}

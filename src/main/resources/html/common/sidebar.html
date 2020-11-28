@@ -1,15 +1,16 @@
 
 <!-- Sidebar Header-->
+<div id="app_">
 <div class="sidebar-header d-flex align-items-center">
-    <div id="avatar" class="avatar"><img src="img/avatar-6.jpg" alt="..." class="img-fluid rounded-circle"></div>
+    <div id="avatar" class="avatar"><img :src="loginUser.pic" alt="..." class="img-fluid rounded-circle" @click="toUserLook"></div>
     <div class="title">
-        <h1 class="h5">小标</h1>
-        <p>研发部</p>
+        <h1 class="h5">{{loginUser.username}}</h1>
+        <p>{{loginUser.deptName}}</p>
     </div>
 </div>
 <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
 <ul class="list-unstyled">
-    <li class="active"><a href="home.html"> <i class="icon-home"></i>主页 </a></li>
+    <li><a href="html/home.html"> <i class="icon-home"></i>主页 </a></li>
     <li><a href="#userDropdown" data-toggle="collapse"> <i class="icon-windows"></i>用户列表</a>
         <ul id="userDropdown" class="collapse list-unstyled ">
             <li><a href="html/user.html">查看用户</a></li>
@@ -28,4 +29,45 @@
     </li>
 
 </ul>
+</div>
+    <script>
+        let vm1=new Vue({
+            el:'#app_',
+            data:{
+                loginUser:{}
+            },
+            methods:{
+                toUserLook:function () {
+                    layer.open({
+                        type: 2,
+                        title: false,
+                        area: ['80%', '80%'],
+                        content: ['html/user_look.html'],
+                        end: () => { //此处用于演示
+                                this.getLoginUser();
+                        }
+                    })
+                },
+                getLoginUser: function () {
+                    let loginUserStr = sessionStorage.getItem("loginUser");
+                    let loginUser = JSON.parse(loginUserStr);
+                    axios({
+                        url: 'user/initLoginUser',
+                        params: {userId: loginUser.id}
+                    }).then(response => {
+                        if (response.data.success) {
+                            this.loginUser = response.data.obj;
+                        }
+                    }).catch(error => {
+
+                    });
+                }
+            },
+            created:function () {
+                this.getLoginUser();
+            }
+        });
+    </script>
+
+
 

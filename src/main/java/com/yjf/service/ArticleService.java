@@ -4,6 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.yjf.entity.Article;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author 余俊锋
  * @date 2020/11/19 10:11
@@ -25,6 +28,9 @@ public interface ArticleService extends BaseService<Article,String> {
 
     PageInfo<Article> selectCollectArticle(Integer pageNum,Integer pageSize,Integer userId,String title);
 
+    int RecentArticleCount();
 
+    List<Map<String,String>> selectCurrentDayCount();
 
+    void updateArticleBrowseCount(Integer id,Integer count);
 }
