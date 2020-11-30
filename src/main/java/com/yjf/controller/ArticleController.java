@@ -26,48 +26,50 @@ import java.util.Map;
 @RequestMapping("article")
 public class ArticleController {
     @Autowired
-    private  ArticleService articleService;
+    private ArticleService articleService;
     @Autowired
     private UserService userService;
+
     /**
-     *@Description TODO:文章列表  索引库分页查询
-     *@author 余俊锋
-     *@date 2020/11/19 17:08
-     *@params pageNum
      * @param pageSize
      * @param keywords
-     *@return com.yjf.entity.Result
+     * @return com.yjf.entity.Result
+     * @Description TODO:文章列表  索引库分页查询
+     * @author 余俊锋
+     * @date 2020/11/19 17:08
+     * @params pageNum
      */
     @RequestMapping("selectPage/{pageNum}/{pageSize}")
     @ResponseBody
     public Result selectPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize, String keywords) {
         Map<String, Object> map = new HashMap<>();
         Result result = new Result();
-        if (keywords!=null&&keywords.length()>0){
+        if (keywords != null && keywords.length() > 0) {
             Page<Article> page = articleService.selectPage(pageNum, pageSize, keywords);
-            map.put("hasPrevious",page.hasPrevious());
-            map.put("hasNext",page.hasNext());
-            map.put("pageInfo",page);
+            map.put("hasPrevious", page.hasPrevious());
+            map.put("hasNext", page.hasNext());
+            map.put("pageInfo", page);
             result.setObj(map);
             return result;
         }
         Page<Article> page = articleService.selectAll(pageNum, pageSize);
-        map.put("hasPrevious",page.hasPrevious());
-        map.put("hasNext",page.hasNext());
-        map.put("pageInfo",page);
+        map.put("hasPrevious", page.hasPrevious());
+        map.put("hasNext", page.hasNext());
+        map.put("pageInfo", page);
         result.setObj(map);
         return result;
     }
+
     /**
-     *@Description TODO:通过 id 获取文章收藏次数
-     *@author 余俊锋
-     *@date \ 17:07
-     *@params id
-     *@return com.yjf.entity.Result
+     * @return com.yjf.entity.Result
+     * @Description TODO:通过 id 获取文章收藏次数
+     * @author 余俊锋
+     * @date \ 17:07
+     * @params id
      */
     @RequestMapping("getFavCount")
     @ResponseBody
-    public Result getFavCount(Integer id){
+    public Result getFavCount(Integer id) {
         Result result = new Result();
         Integer count = articleService.getFavCount(id);
         result.setObj(count);
@@ -75,53 +77,55 @@ public class ArticleController {
     }
 
     /**
-     *@Description TODO: 查询登陆用户关注的人  中收藏了此文章的人
-     *@author 余俊锋
-     *@date 2020/11/19 17:10
-     *@params id
-     *@return com.yjf.entity.Result
+     * @return com.yjf.entity.Result
+     * @Description TODO: 查询登陆用户关注的人  中收藏了此文章的人
+     * @author 余俊锋
+     * @date 2020/11/19 17:10
+     * @params id
      */
     @RequestMapping("getUsersByArticleId")
     @ResponseBody
-    public Result getUsersByArticleId(Integer userId,Integer articleId){
+    public Result getUsersByArticleId(Integer userId, Integer articleId) {
         Result result = new Result();
-        List<User> userList = userService.selectUsersByArticleId(userId,articleId);
+        List<User> userList = userService.selectUsersByArticleId(userId, articleId);
         result.setObj(userList);
         return result;
     }
+
     /**
-     *@Description TODO:查询是否已经收藏
-     *@author 余俊锋
-     *@date 2020/11/19 18:00
-     *@params userId
      * @param articleId
-     *@return com.yjf.entity.Result
+     * @return com.yjf.entity.Result
+     * @Description TODO:查询是否已经收藏
+     * @author 余俊锋
+     * @date 2020/11/19 18:00
+     * @params userId
      */
     @RequestMapping("getCollectionStatus")
     @ResponseBody
-    public Result getCollectionStatus(Integer userId,Integer articleId){
+    public Result getCollectionStatus(Integer userId, Integer articleId) {
         Result result = new Result();
         Boolean status = articleService.getCollectionStatus(userId, articleId);
         result.setObj(status);
         return result;
     }
+
     /**
-     *@Description TODO:该表登陆用户收藏的文章状态
-     *@author 余俊锋
-     *@date 2020/11/19 18:12
-     *@params userId
      * @param articleId
-     *@return com.yjf.entity.Result
+     * @return com.yjf.entity.Result
+     * @Description TODO:该表登陆用户收藏的文章状态
+     * @author 余俊锋
+     * @date 2020/11/19 18:12
+     * @params userId
      */
     @RequestMapping("changeCollect")
     @ResponseBody
-    public Result changeCollect(Integer userId,Integer articleId,Boolean status){
+    public Result changeCollect(Integer userId, Integer articleId, Boolean status) {
         Result result = new Result();
-        articleService.changeCollection(status,userId,articleId);
-        if (status){
+        articleService.changeCollection(status, userId, articleId);
+        if (status) {
             result.setMsg("已取消收藏");
             result.setObj(false);
-            return  result;
+            return result;
         }
         result.setObj(true);
         result.setMsg("收藏成功");
@@ -129,25 +133,25 @@ public class ArticleController {
     }
 
     /**
-     *@Description TODO；发布的数据保存到数据库  和 索引库
-     *@author 余俊锋
-     *@date 2020/11/19 19:48
-     *@params article
      * @param session
-     *@return com.yjf.entity.Result
+     * @return com.yjf.entity.Result
+     * @Description TODO；发布的数据保存到数据库  和 索引库
+     * @author 余俊锋
+     * @date 2020/11/19 19:48
+     * @params article
      */
-    @RequestMapping(value = "doSaveArticle",method = RequestMethod.PUT)
+    @RequestMapping(value = "doSaveArticle", method = RequestMethod.PUT)
     @ResponseBody
-    public Result doSaveArticle(@RequestBody Article article, HttpSession session){
+    public Result doSaveArticle(@RequestBody Article article, HttpSession session) {
         Result result = new Result();
-        User loginUser =(User) session.getAttribute("loginUser");
-        if (loginUser!=null){
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser != null) {
             article.setUserId(loginUser.getId());
             article.setPublishRealName(loginUser.getRealName());
         }
         article.setPublishDate(new Date());
         int i = articleService.insertSelective(article);
-        if (i>0){
+        if (i > 0) {
             result.setMsg("发布成功");
             Article article1 = articleService.saveArticleForSolr(article);//保存到索引库
             return result;
@@ -160,25 +164,44 @@ public class ArticleController {
 
     @RequestMapping(value = "selectCollectPage/{pageNum}/{pageSize}")
     @ResponseBody
-    public Result selectCollectPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize,Integer id,String title){
-        PageInfo<Article> pageInfo = articleService.selectCollectArticle(pageNum, pageSize, id,title);
+    public Result selectCollectPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize, Integer id, String title) {
+        PageInfo<Article> pageInfo = articleService.selectCollectArticle(pageNum, pageSize, id, title);
         Result result = new Result();
         result.setObj(pageInfo);
         return result;
     }
 
     /**
-     *@Description TODO:浏览次数+1
-     *@author 余俊锋
-     *@date 2020/11/28 17:31
-     *@params id
-     *@return com.yjf.entity.Result
+     * @return com.yjf.entity.Result
+     * @Description TODO:浏览次数+1
+     * @author 余俊锋
+     * @date 2020/11/28 17:31
+     * @params id
      */
-    @RequestMapping(value = "updateArticleBrowseCount/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "updateArticleBrowseCount/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Result updateArticleBrowseCount(@PathVariable Integer id){
-        articleService.updateArticleBrowseCount(id,1);
-        return new Result(true,"修改成功",null);
+    public Result updateArticleBrowseCount(@PathVariable Integer id) {
+        articleService.updateArticleBrowseCount(id, 1);
+        return new Result(true, "修改成功", null);
+    }
+
+/**
+ *@Description TODO:根据id  查询文章
+ *@author 余俊锋
+ *@date 2020/11/30 9:50
+ *@params id
+ *@return com.yjf.entity.Result
+ */
+
+
+    @RequestMapping(value = "{id}")
+    @ResponseBody
+    public Result selectCollectPage(@PathVariable String id) {
+        Article article = new Article();
+        article.setId(id);
+        Article one = articleService.selectOne(article);
+        return new Result(true, "查询成功", one);
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.yjf.interceptor;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -8,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2020/11/21 15:31
  * @Description
  */
-//@Configuration
+@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
 
@@ -21,8 +22,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
         };
         //不需要的拦截路径，同上
         String[] excludePathPatterns = {
-                "/toIndex","/index.html","/doLogin","/static/**","/kaptcha/**","/doRegister","/doCheckUsername","/user/getCode","/user/changePassword","/js"
-                ,"/css"  ,"/img"
+                "/**/toIndex","/**/index.html","/**/doLogin","/**/static/**","/**/kaptcha/**","/**/doRegister","/**/doCheckUsername","/**/user/getCode","/**/user/changePassword"
+                ,"/**/forget.html","/**/register.html","/**/js/**","/**/css/**","/**/img/**","/**/vendor/**","/**/fonts/**","/**/bootstrap/**","/**/upload/**"
         };
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns(addPathPatterns).excludePathPatterns(excludePathPatterns);
 

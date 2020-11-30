@@ -34,7 +34,8 @@
         let vm1=new Vue({
             el:'#app_',
             data:{
-                loginUser:{}
+                loginUser:{},
+                id:{}
             },
             methods:{
                 toUserLook:function () {
@@ -49,22 +50,37 @@
                     })
                 },
                 getLoginUser: function () {
-                    let loginUserStr = sessionStorage.getItem("loginUser");
-                    let loginUser = JSON.parse(loginUserStr);
+                    /*let loginUserStr = sessionStorage.getItem("loginUser");
+                    let loginUser = JSON.parse(loginUserStr);*/
                     axios({
                         url: 'user/initLoginUser',
-                        params: {userId: loginUser.id}
+                        params: {userId: this.id}
                     }).then(response => {
                         if (response.data.success) {
                             this.loginUser = response.data.obj;
+                            let loginUserStr = JSON.stringify(response.data.obj);
+                            sessionStorage.setItem("loginUser",loginUserStr);
                         }
                     }).catch(error => {
 
                     });
+                },
+                getSessionLoginUser:function () {
+                    axios({
+                        url: 'user/getSessionLoginUser',
+                    }).then(response => {
+                        if (response.data.success) {
+                            this.id = response.data.obj.id;
+                            this.getLoginUser();
+                        }
+                    }).catch(error => {
+
+                    });
+
                 }
             },
             created:function () {
-                this.getLoginUser();
+                this.getSessionLoginUser();
             }
         });
     </script>

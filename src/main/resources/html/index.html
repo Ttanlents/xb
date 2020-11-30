@@ -58,7 +58,7 @@
 
 						<div class="checkbox">
 							<label>
-								<input type="checkbox"> 记住我
+								<input type="checkbox" value="1" v-model="remember"> 记住我
 							</label>
 						</div>
 						<button type="button" class="btn" @click="doLogin">登录</button>
@@ -92,14 +92,15 @@
 			    username:'',
 				password:'',
 				code:'',
-                render:'kaptcha/render'
+                render:'kaptcha/render',
+                remember:false
 			},
 			methods:{
                 doLogin:function () {
                     axios({
                         url:'doLogin',
 						method:'post',
-                        params:{'username':this.username,'password':this.password,'code':this.code}
+                        params:{'username':this.username,'password':this.password,'code':this.code,'remember':this.remember}
                     }).then(response=>{
                         console.log(response.data);
                         if (response.data.success){

@@ -4,6 +4,7 @@ import com.baomidou.kaptcha.Kaptcha;
 import com.yjf.entity.Result;
 import com.yjf.entity.User;
 import com.yjf.service.UserService;
+import com.yjf.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 
 /**
  * @author 余俊锋
@@ -49,16 +53,25 @@ public class LoginController {
      */
     @RequestMapping(value = "doLogin", method = RequestMethod.POST)
     @ResponseBody
-    public Result doLogin(String username, String password, String code, HttpSession session) {
+    public Result doLogin(String username, String password, String code, Boolean remember, HttpSession session, HttpServletResponse response) throws Exception {
         String message = "";
         Result result = new Result();
         if (kaptcha.validate(code)) {
-            User user = new User();
+
             User loginUser = userService.toLogin(username, password);
             if (loginUser != null) {
                 session.setAttribute("loginUser", loginUser);
                 loginUser.setPassword(null);
                 result.setObj(loginUser);
+                    if (remember) {
+                        Cookie cookie = new Cookie("cookie_login", URLEncoder.encode(JsonUtils.pojoToJson(loginUser), "utf-8"));
+                        int time = 60 * 60 * 24 * 7;
+                        cookie.setMaxAge(time);
+                        cookie.setPath("/");
+                        response.addCookie(cookie);
+                        System.out.println("免密七天");
+                    }
+
                 return new Result(true, "登录成功", loginUser);
             } else {
                 message = "账号或密码错误";

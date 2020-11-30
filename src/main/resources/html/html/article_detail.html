@@ -99,8 +99,19 @@
                     loginUser:{}
 				},
 				methods:{
+				    refreshArticle:function(){
+                        axios({
+                            url:`article/${parent.layer.obj.id}`,
+                        }).then(response=>{
+                            if (response.data.success){
+                               this.article=response.data.obj;
+                                this.selectFavCount();
+                                this.selectUsers();
+                                this.getCollectStatus();
+                            }
+                        }).catch();
+					},
 					selectFavCount:function () {  //获取收藏次数
-                        this.article=parent.layer.obj;
                         axios({
 							url:'article/getFavCount',
 							params:{id:this.article.id}
@@ -153,7 +164,6 @@
                             if (response.data.success){
                                 this.status=response.data.obj;
                                 layer.msg(response.data.msg);
-                                this.updateArticleBrowseCount();
                                 this.selectFavCount();
                                 this.selectUsers();
                                 this.getCollectStatus();
@@ -165,15 +175,19 @@
 							axios({
 								url:`article/updateArticleBrowseCount/${parent.layer.obj.id}`,
 								method:'put'
-							}).then().catch();
+							}).then(response=>{
+							    if (response.data.success) {
+							        console.log('文章+1');
+                                    this.refreshArticle();
+								}
+							}).catch(error=>{
+							    layer.msg(error.message)
+							});
                     }
 
 				},
 				created:function () {
 				    this.updateArticleBrowseCount();
-					this.selectFavCount();
-					this.selectUsers();
-					this.getCollectStatus();
                 }
 			});
 		</script>

@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -172,7 +175,7 @@ public class UserController {
         String suffix = originalFilename.substring(originalFilename.indexOf("."));
         File file1 = new File(prefix + picName + suffix);
         file.transferTo(file1);
-        String url = "http://localhost:80/uploads/" + picName + suffix;
+        String url = "http://192.168.1.118:80/uploads/" + picName + suffix;
         return new Result(true, "上传成功", url);
     }
 
@@ -198,6 +201,34 @@ public class UserController {
     public Result updateUserLook(Integer id) {
         userService.updateUserLook(id);
         return new Result(true,"被看次数+1",null);
+    }
+
+    @RequestMapping(value = "loginOut")
+    public String loginOut(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+      session.removeAttribute("loginUser");
+        Cookie[] cookies = request.getCookies();
+        if (cookies!=null&&cookies.length>0){
+            for (Cookie cookie : cookies) {
+                String name = cookie.getName();
+                if ("cookie_login".equals(name)){
+                    Cookie crearCookie = new Cookie("cookie_login",null);
+                    crearCookie.setMaxAge(0);
+                    crearCookie.setPath("/");
+                    response.addCookie(crearCookie);
+                }
+            }
+        }
+       return "redirect:/index.html";
+    }
+
+    @RequestMapping(value = "getSessionLoginUser")
+    @ResponseBody
+    public  Result getSessionLoginUser(HttpSession session){
+        User user =(User) session.getAttribute("loginUser");
+        if (user!=null){
+            return  new Result(true,"查询成功",user);
+        }
+        return  new Result(false,"失败",null);
     }
 
 
